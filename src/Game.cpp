@@ -4,12 +4,6 @@
 using namespace std;
 
 int tecla;
-char soundComida[] = "..\\sounds\\CoinPlay.wav";
-
-DWORD WINAPI playSoundComida(LPVOID lpParam){
-    PlaySound((LPCTSTR)soundComida, NULL, SND_FILENAME | SND_ASYNC);
-    return 0;
-}
 
 Game::Game(){
     velocidad = 200;
@@ -114,7 +108,6 @@ void Game::run(){
         
         teclear();
         if(c.colisionComida(s.x,s.y)){
-            hiloComida = CreateThread(NULL,0,playSoundComida,NULL,0,&threadID);
             s.tam++;
             score += 10;
             cambiarVelocidad();
