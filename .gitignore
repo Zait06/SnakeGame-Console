@@ -1,0 +1,7 @@
+# No necesary
+.vscode
+*.o
+*.exe
+null
+*.jpg
+*.JPG
