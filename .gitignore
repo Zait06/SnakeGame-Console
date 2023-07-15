@@ -1,7 +1,11 @@
 # No necesary
 .vscode
+
 *.o
 *.exe
-null
-*.jpg
-*.JPG
+*.tmp
+*.csv
+*.out
+*.png
+*.pdf
+build/

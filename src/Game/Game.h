@@ -1,28 +1,18 @@
-#include <iostream>
-#include <stdio.h>
-#include <conio.h>
-#include <stdlib.h>
-#include "Snake.h"
-#include "Comida.h"
-
-using namespace std;
-
-// Numeros asociados a las flechas
-#define UP      72
-#define LEFT    75
-#define RIGTH   77
-#define DOWN    80
-#define ESC     27
-#define ENTER   13
-
 #ifndef _GAME_H_
 #define _GAME_H_
 
-class Game{
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include "../Snake/Snake.h"
+#include "../Comida/Comida.h"
+
+class Game {
     private:
-        int velocidad;
+        uint16_t m_key;
+		int velocidad;
         int score;
-        Snake s;
+        Snake snake;
         Comida c;
         void borrarSerpiente();
         void dibujarSerpiente();
