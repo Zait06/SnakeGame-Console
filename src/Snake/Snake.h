@@ -5,21 +5,31 @@
 #include <stdlib.h>
 #include <iostream>
 #include "../utils/screen.h"
+#include "../utils/keyboard.h"
 
 class Snake{
     public:
         Snake();
+		int n;		// Cell number
+		int size;	// Snake size
+		
+		Direction dir();
+		void setDir(Direction dir);
+		
+		CoordStr at(int idx);
+		void set(int idx, CoordStr value);
 
-        CoordStr body[1000];    // Cuerpo de la serpiente (coordenadas (x,y))
-        int n;                  // Numero de casillas
-        int tam;                // Tamanio de la serpietne
-        int dir;                // Direccion de la serpiente
-		CoordStr m_coord;
+		CoordStr coord();
+		void setCoord(CoordStr coord);
 
-        void initSnake();
-        void guardar_posicion();    // Guardar posicion de la serpiente
-        void moverse();
+        void init();
+        void moveTo();
+        void savePosition();	// Save snake position
 
+	private:
+        CoordStr body[1000];    // Snake body
+        Direction m_dir;		// Snake direction
+		CoordStr m_coord;		// Snake position (head)
 };
 
 #endif

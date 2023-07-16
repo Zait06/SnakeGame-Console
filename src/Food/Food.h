@@ -1,19 +1,19 @@
-#ifndef _COMIDA_H_
-#define _COMIDA_H_
+#ifndef _FOOD_H_
+#define _FOOD_H_
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
 #include "../utils/screen.h"
 
-class Comida{
+class Food{
     public:
-        Comida();
+        Food();
 
 		CoordStr m_coord;	// Food coordinate
         
-		void initComida();
-        bool colisionComida(CoordStr coord);
+		void init();
+        bool impact(CoordStr coord);
 };
 
 #endif

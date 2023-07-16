@@ -15,12 +15,6 @@ typedef struct CoordStr {
 	}
 } CoordStr;
 
-enum class Direction {
-	DOWN = 1,
-	UP,
-	RIGTH,
-	LEFT
-};
  
 // Funcion que posiciona el cursor en la consola en coordenadas (x,y)
 void gotoxy(CoordStr coord);

@@ -1,27 +1,44 @@
 #include "Snake.h"
 
 Snake::Snake() {
-    n = 1; tam = 4;
+    n = 1; size = 4;
     m_coord = {10, 12};
-	dir = 3;
+	m_dir = Direction::RIGTH;
 }
 
-void Snake::initSnake() {
-    n = 1; tam = 4;
+void Snake::init() {
+    n = 1; size = 4;
 	m_coord = {10, 12};
-    dir = 3;
+    m_dir = Direction::RIGTH;
 }
 
-void Snake::guardar_posicion() {
+void Snake::savePosition() {
     body[n] = m_coord;
-    body[0] = m_coord;   // Posicion cabeza
+    body[0] = m_coord;
     n++;
-    if (n == tam) n = 1;
+    if (n == size) n = 1;
 }
 
-void Snake::moverse() {
-	if (dir == 1) m_coord.y--;
-    if (dir == 2) m_coord.y++;
-    if (dir == 3) m_coord.x++;
-    if (dir == 4) m_coord.x--;
+void Snake::moveTo() {
+	switch (m_dir) {
+		case Direction::UP:
+			m_coord.y--;
+		break;
+		case Direction::DOWN:
+			m_coord.y++;
+		break;
+		case Direction::RIGTH:
+			m_coord.x++;
+		break;
+		case Direction::LEFT:
+			m_coord.x--;
+		break;
+	}
 }
+
+CoordStr Snake::at(int idx) { return body[idx]; }
+void Snake::set(int idx, CoordStr value) { body[idx] = value; }
+Direction Snake::dir() { return m_dir; }
+void Snake::setDir(Direction dir) { m_dir = dir; }
+CoordStr Snake::coord() { return m_coord; }
+void Snake::setCoord(CoordStr coord) { m_coord = coord; }

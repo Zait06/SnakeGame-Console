@@ -9,3 +9,11 @@ enum class Keys : uint16_t {
 	RIGTH = 77,
 	DOWN = 80
 };
+
+enum class Direction : uint8_t {
+	UP = 1,
+	DOWN,
+	RIGTH,
+	LEFT
+};
+

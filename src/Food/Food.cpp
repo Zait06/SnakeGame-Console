@@ -1,18 +1,18 @@
-#include "Comida.h"
+#include "Food.h"
 
-Comida::Comida() {
+Food::Food() {
     m_coord.x = (rand() % 73) + 4;
     m_coord.y = (rand() % 19) + 4; 
 }
 
-void Comida::initComida() {
+void Food::init() {
     m_coord.x = (rand() % 73) + 4;
     m_coord.y = (rand() % 19) + 4;
 }
 
-bool Comida::colisionComida(CoordStr coord) {
+bool Food::impact(CoordStr coord) {
     if (m_coord == coord) {
-        initComida();
+        init();
         return true;
     }
     return false;

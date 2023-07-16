@@ -5,26 +5,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../Snake/Snake.h"
-#include "../Comida/Comida.h"
+#include "../Food/Food.h"
 
 class Game {
-    private:
-        uint16_t m_key;
-		int velocidad;
-        int score;
-        Snake snake;
-        Comida c;
-        void borrarSerpiente();
-        void dibujarSerpiente();
-        void pintarComida();
     public:
         Game();
-        void pintarMarco();
-        void pintarScore();
-        bool game_over();
-        void teclear();
-        void cambiarVelocidad();
         void run();
+        void paintFrame();
+        void paintScore();
+        bool gameOver();
+        void tapKey();
+        void changeVelocity();
+
+	private:
+        int score;
+		int velocity;
+        Food m_food;
+        Snake m_snake;
+        uint16_t m_key;
+
+        void dropSnake();
+        void paintSnake();
+        void paintFood();
+
 };
 
 #endif
