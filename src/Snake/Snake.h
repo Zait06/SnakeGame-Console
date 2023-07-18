@@ -4,10 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-#include "../utils/screen.h"
-#include "../utils/keyboard.h"
 
-class Snake{
+#include "../utils/keyboard.h"
+#include "../utils/screen.h"
+
+class Snake {
     public:
         Snake();
 		int n;		// Cell number
@@ -27,9 +28,9 @@ class Snake{
         void savePosition();	// Save snake position
 
 	private:
-        CoordStr body[1000];    // Snake body
+        CoordStr* body[1000];    // Snake body
         Direction m_dir;		// Snake direction
-		CoordStr m_coord;		// Snake position (head)
+		CoordStr* m_coord;		// Snake position (head)
 };
 
 #endif

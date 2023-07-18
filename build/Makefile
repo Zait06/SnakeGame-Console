@@ -155,6 +155,45 @@ utils/fast:
 	$(MAKE) $(MAKESILENT) -f src/utils/CMakeFiles/utils.dir/build.make src/utils/CMakeFiles/utils.dir/build
 .PHONY : utils/fast
 
+#=============================================================================
+# Target rules for targets named Food
+
+# Build rule for target.
+Food: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Food
+.PHONY : Food
+
+# fast build rule for target.
+Food/fast:
+	$(MAKE) $(MAKESILENT) -f src/Food/CMakeFiles/Food.dir/build.make src/Food/CMakeFiles/Food.dir/build
+.PHONY : Food/fast
+
+#=============================================================================
+# Target rules for targets named Snake
+
+# Build rule for target.
+Snake: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Snake
+.PHONY : Snake
+
+# fast build rule for target.
+Snake/fast:
+	$(MAKE) $(MAKESILENT) -f src/Snake/CMakeFiles/Snake.dir/build.make src/Snake/CMakeFiles/Snake.dir/build
+.PHONY : Snake/fast
+
+#=============================================================================
+# Target rules for targets named Game
+
+# Build rule for target.
+Game: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Game
+.PHONY : Game
+
+# fast build rule for target.
+Game/fast:
+	$(MAKE) $(MAKESILENT) -f src/Game/CMakeFiles/Game.dir/build.make src/Game/CMakeFiles/Game.dir/build
+.PHONY : Game/fast
+
 src/main.o: src/main.cpp.o
 
 .PHONY : src/main.o
@@ -190,6 +229,9 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... Food"
+	@echo "... Game"
+	@echo "... Snake"
 	@echo "... SnakeGame"
 	@echo "... utils"
 	@echo "... src/main.o"

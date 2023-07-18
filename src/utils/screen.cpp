@@ -17,3 +17,6 @@ void gotoxy(CoordStr coord) {
 	#endif
 
 }
+
+typedef struct CoordStr CoordStr;
+

@@ -4,6 +4,9 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <thread>
+#include <chrono>
+
 #include "../Snake/Snake.h"
 #include "../Food/Food.h"
 
@@ -20,8 +23,8 @@ class Game {
 	private:
         int score;
 		int velocity;
-        Food m_food;
-        Snake m_snake;
+        Food* m_food;
+        Snake* m_snake;
         uint16_t m_key;
 
         void dropSnake();

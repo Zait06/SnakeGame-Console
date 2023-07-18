@@ -1,32 +1,28 @@
-#include <conio.h>:
-
 #include "Game.h"
-#include "../utils/screen.h"
-#include "../utils/keyboard.h"
 
 Game::Game() {
     velocity = 200;
     score = 0;
-    m_snake.init();
-    m_food.init();
+    m_snake->init();
+    m_food->init();
 }
 
 void Game::dropSnake() {
-    gotoxy(m_snake.at(m_snake.n));
+    gotoxy(m_snake->at(m_snake->n));
     printf(" ");
 }
 
 void Game::paintSnake() {
-    for (int i = 1; i < m_snake.size ; i++) {
-        gotoxy(m_snake.at(i));
+    for (int i = 1; i < m_snake->size ; i++) {
+        gotoxy(m_snake->at(i));
         printf("%c", 111);
     }
-    gotoxy(m_snake.at(0));
+    gotoxy(m_snake->at(0));
     printf("%c", 2);
 }
 
 void Game::paintFood() {
-    gotoxy(m_food.m_coord);
+    gotoxy(m_food->coord());
     printf("%c", 4);
 }
 
@@ -56,39 +52,37 @@ void Game::paintScore() {
 }
 
 bool Game::gameOver() {
-	CoordStr snakeCoord = m_snake.coord();
+	CoordStr snakeCoord = m_snake->coord();
     if ( snakeCoord.y == 3 || snakeCoord.y == 23 || snakeCoord.x == 2 || snakeCoord.x == 77)
         return false;
-    for (int j = m_snake.size - 1; j > 0; j--) {
-        if (m_snake.at(j) == snakeCoord)
+    for (int j = m_snake->size - 1; j > 0; j--) {
+        if (m_snake->at(j) == snakeCoord)
             return false;
     }
     return true;
 }
 
 void Game::tapKey() {
-    if (kbhit()) {
-        m_key = getch();
-		Keys key = static_cast<Keys>(m_key);
-        switch(key) {
-			case Keys::UP:
-                if (m_snake.dir() != Direction::DOWN)
-					m_snake.setDir(Direction::UP);
+	m_key = std::cin.get();
+	Keys key = static_cast<Keys>(m_key);
+    switch(key) {
+		case Keys::UP:
+			if (m_snake->dir() != Direction::DOWN)
+				m_snake->setDir(Direction::UP);
             break;
-			case Keys::DOWN:
-                if (m_snake.dir() != Direction::UP)
-					m_snake.setDir(Direction::DOWN);
+		case Keys::DOWN:
+            if (m_snake->dir() != Direction::UP)
+				m_snake->setDir(Direction::DOWN);
             break;
-			case Keys::RIGTH:
-                if (m_snake.dir() != Direction::LEFT)
-					m_snake.setDir(Direction::RIGTH);
+		case Keys::RIGTH:
+            if (m_snake->dir() != Direction::LEFT)
+				m_snake->setDir(Direction::RIGTH);
             break;
-			case Keys::LEFT:
-                if (m_snake.dir() != Direction::RIGTH)
-					m_snake.setDir(Direction::LEFT);
+		case Keys::LEFT:
+			if (m_snake->dir() != Direction::RIGTH)
+				m_snake->setDir(Direction::LEFT);
             break;
-			default: break;
-        }
+		default: break;
     }
 }
 
@@ -99,9 +93,7 @@ void Game::changeVelocity() {
 }
 
 void Game::run() {
-
-    DWORD threadID;
-    HANDLE hiloComida;
+//    HANDLE hiloComida;
 
     paintFrame();
     paintFood();
@@ -109,20 +101,20 @@ void Game::run() {
     while(m_key != static_cast<uint16_t>(Keys::ESC) && gameOver()) {
         paintScore();
         dropSnake();
-        m_snake.savePosition();
+        m_snake->savePosition();
         paintSnake();
         
         tapKey();
-        if (m_food.impact(m_snake.coord())) {
-            m_snake.size++;
+        if (m_food->impact(m_snake->coord())) {
+            m_snake->size++;
             score += 10;
             changeVelocity();
             paintFood();
-            CloseHandle(hiloComida);
+//            CloseHandle(hiloComida);
         }
         tapKey();
 
-        m_snake.moveTo();
-        Sleep(velocity);
+        m_snake->moveTo();
+		std::this_thread::sleep_for(std::chrono::milliseconds(velocity));
     }
 }

@@ -4,16 +4,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-#include "../utils/screen.h"
 
-class Food{
+typedef struct CoordStr CoordStr;
+
+class Food {
     public:
         Food();
 
-		CoordStr m_coord;	// Food coordinate
+		CoordStr coord();	// Food coordinate
+		void setCoord(CoordStr coord);
         
 		void init();
         bool impact(CoordStr coord);
+
+	private:
+		CoordStr* m_coord;
 };
 
 #endif
