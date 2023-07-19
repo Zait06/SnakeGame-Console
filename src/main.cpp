@@ -4,9 +4,11 @@
 #include <time.h>
 
 #include "Game/Game.h"
+#include "system_actions/system_actions.h"
 
 int main() {
 	srand(time(NULL));
+	CLEARSCREEN;
 	Game game;
 	game.run();
 	PAUSE;

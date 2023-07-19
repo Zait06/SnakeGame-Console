@@ -1,3 +1,6 @@
+#ifndef _KEYBOARD_H_
+#define _KEYBOARD_H_
+
 #include <iostream>
 #include <cstdint>
 
@@ -17,3 +20,4 @@ enum class Direction : uint8_t {
 	LEFT
 };
 
+#endif // _KEYBOARD_H_

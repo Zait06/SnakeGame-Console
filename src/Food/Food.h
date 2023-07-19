@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <iostream>
 
-typedef struct CoordStr CoordStr;
+#include "../utils/screen.h"
 
 class Food {
     public:
@@ -18,7 +18,7 @@ class Food {
         bool impact(CoordStr coord);
 
 	private:
-		CoordStr* m_coord;
+		CoordStr m_coord;
 };
 
 #endif

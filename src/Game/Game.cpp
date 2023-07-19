@@ -1,10 +1,13 @@
 #include "Game.h"
 
+#include "../system_actions/system_actions.h"
+
 Game::Game() {
     velocity = 200;
     score = 0;
-    m_snake->init();
-    m_food->init();
+
+    m_snake = new Snake();
+    m_food = new Food();
 }
 
 void Game::dropSnake() {
@@ -63,26 +66,28 @@ bool Game::gameOver() {
 }
 
 void Game::tapKey() {
-	m_key = std::cin.get();
-	Keys key = static_cast<Keys>(m_key);
-    switch(key) {
-		case Keys::UP:
-			if (m_snake->dir() != Direction::DOWN)
-				m_snake->setDir(Direction::UP);
-            break;
-		case Keys::DOWN:
-            if (m_snake->dir() != Direction::UP)
-				m_snake->setDir(Direction::DOWN);
-            break;
-		case Keys::RIGTH:
-            if (m_snake->dir() != Direction::LEFT)
-				m_snake->setDir(Direction::RIGTH);
-            break;
-		case Keys::LEFT:
-			if (m_snake->dir() != Direction::RIGTH)
-				m_snake->setDir(Direction::LEFT);
-            break;
-		default: break;
+	if (CHECKKEY) {
+        m_key = std::cin.get();
+        Keys key = static_cast<Keys>(m_key);
+        switch(key) {
+            case Keys::UP:
+                if (m_snake->dir() != Direction::DOWN)
+                    m_snake->setDir(Direction::UP);
+                break;
+            case Keys::DOWN:
+                if (m_snake->dir() != Direction::UP)
+                    m_snake->setDir(Direction::DOWN);
+                break;
+            case Keys::RIGTH:
+                if (m_snake->dir() != Direction::LEFT)
+                    m_snake->setDir(Direction::RIGTH);
+                break;
+            case Keys::LEFT:
+                if (m_snake->dir() != Direction::RIGTH)
+                    m_snake->setDir(Direction::LEFT);
+                break;
+            default: break;
+        }
     }
 }
 

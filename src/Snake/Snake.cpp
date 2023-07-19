@@ -11,8 +11,8 @@ void Snake::init() {
 }
 
 void Snake::savePosition() {
-    body[n] = m_coord;
-    body[0] = m_coord;
+    body[n] = *m_coord;
+    body[0] = *m_coord;
     n++;
     if (n == size) n = 1;
 }
@@ -34,8 +34,8 @@ void Snake::moveTo() {
 	}
 }
 
-CoordStr Snake::at(int idx) { return *body[idx]; }
-void Snake::set(int idx, CoordStr value) { body[idx] = &value; }
+CoordStr Snake::at(int idx) { return body[idx]; }
+void Snake::set(int idx, CoordStr value) { body[idx] = value; }
 Direction Snake::dir() { return m_dir; }
 void Snake::setDir(Direction dir) { m_dir = dir; }
 CoordStr Snake::coord() { return *m_coord; }

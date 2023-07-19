@@ -1,3 +1,6 @@
+#ifndef _SCREEN_H_
+#define _SCREEN_H_
+
 #include <iostream>
 
 struct CoordStr { 
@@ -7,23 +10,7 @@ struct CoordStr {
 	}
 };
  
-// Funcion que posiciona el cursor en la consola en coordenadas (x,y)
+// Cursor position in coords
 void gotoxy(CoordStr coord);
 
-#ifdef _WIN32
-    //code for Windows (32-bit and 64-bit, this part is common)
-	#include <windows.h>
-	#include <conio.h>
-    #define CLEARSCREEN system("cls")
-    #define CHECKKEY _kbhit()
-	#define PAUSE system("pause>null")
-
-#elif __linux__
-    //code for linux
-    #define CLEARSCREEN system("clear")
-    #define CHECKKEY
-	#define PAUSE system("read -rsp $'Press any key to continue...\n' -n 1")
-
-#endif
-
-
+#endif // _SCREEN_H_

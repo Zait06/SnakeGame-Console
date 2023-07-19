@@ -28,7 +28,7 @@ class Snake {
         void savePosition();	// Save snake position
 
 	private:
-        CoordStr* body[1000];    // Snake body
+        CoordStr body[1000];    // Snake body
         Direction m_dir;		// Snake direction
 		CoordStr* m_coord;		// Snake position (head)
 };
