@@ -2,6 +2,9 @@
 #define _SCREEN_H_
 
 #include <iostream>
+#ifdef _WIN32
+#include <windows.h>
+#endif
 
 struct CoordStr { 
 	int x, y;

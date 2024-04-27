@@ -5,9 +5,12 @@
     // Code for Windows (32-bit and 64-bit, this part is common)
 	#include <windows.h>
 	#include <conio.h>
+    #include <mmsystem.h>
     #define CLEARSCREEN system("cls")
     #define CHECKKEY _kbhit()
 	#define PAUSE system("pause>null")
+    #define GETACTION getch()
+    #pragma comment(lib, "winmm.lib")
 
 #elif __linux__
     // Code for linux

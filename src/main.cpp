@@ -11,6 +11,9 @@ int main() {
 	CLEARSCREEN;
 	Game game;
 	game.run();
+#ifdef _WIN32
+	PlaySound(TEXT("../sounds/GameOver.wav"), NULL, SND_FILENAME | SND_ASYNC);
+#endif
 	PAUSE;
     return 0;
 }

@@ -26,7 +26,7 @@ void Game::paintSnake() {
 
 void Game::paintFood() {
     gotoxy(m_food->coord());
-    printf("%c", 4);
+    printf("%c", 178);
 }
 
 void Game::paintFrame() {
@@ -57,17 +57,17 @@ void Game::paintScore() {
 bool Game::gameOver() {
 	CoordStr snakeCoord = m_snake->coord();
     if ( snakeCoord.y == 3 || snakeCoord.y == 23 || snakeCoord.x == 2 || snakeCoord.x == 77)
-        return false;
+        return true;
     for (int j = m_snake->size - 1; j > 0; j--) {
         if (m_snake->at(j) == snakeCoord)
-            return false;
+            return true;
     }
-    return true;
+    return false;
 }
 
 void Game::tapKey() {
 	if (CHECKKEY) {
-        m_key = std::cin.get();
+        m_key = GETACTION;
         Keys key = static_cast<Keys>(m_key);
         switch(key) {
             case Keys::UP:
@@ -97,13 +97,17 @@ void Game::changeVelocity() {
     }
 }
 
-void Game::run() {
-//    HANDLE hiloComida;
+void playSound() {
+#ifdef _WIN32
+    PlaySound(TEXT("../sounds/CoinPlay.wav"), NULL, SND_FILENAME | SND_ASYNC);
+#endif
+}
 
+void Game::run() {
     paintFrame();
     paintFood();
 
-    while(m_key != static_cast<uint16_t>(Keys::ESC) && gameOver()) {
+    while(m_key != static_cast<uint16_t>(Keys::ESC) && !gameOver()) {
         paintScore();
         dropSnake();
         m_snake->savePosition();
@@ -111,11 +115,12 @@ void Game::run() {
         
         tapKey();
         if (m_food->impact(m_snake->coord())) {
+            playSound();
+            m_food->init();
             m_snake->size++;
             score += 10;
             changeVelocity();
             paintFood();
-//            CloseHandle(hiloComida);
         }
         tapKey();
 

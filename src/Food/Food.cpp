@@ -11,7 +11,6 @@ void Food::init() {
 
 bool Food::impact(CoordStr coord) {
     if (m_coord == coord) {
-        init();
         return true;
     }
     return false;

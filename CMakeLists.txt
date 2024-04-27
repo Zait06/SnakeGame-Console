@@ -6,8 +6,6 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -Werror)
 
-# add_subdirectory(src/system_actions)
-
 add_executable(
     SnakeGame 
     src/main.cpp
@@ -25,4 +23,4 @@ add_executable(
     src/Game/Game.cpp
 )
 
-# target_link_libraries(SnakeGame system_actions)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/sounds DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
