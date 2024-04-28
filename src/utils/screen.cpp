@@ -1,7 +1,7 @@
 #include "screen.h"
 
 void gotoxy(CoordStr coord) {
-	
+
 #ifdef _WIN32
     HANDLE hCon;
     COORD dwPos;
@@ -13,10 +13,8 @@ void gotoxy(CoordStr coord) {
 #endif
 
 #ifdef __linux__
-	printf("\033[%d;%dH", coord.y + 1, coord.x + 1);
+    printf("\033[%d;%dH", coord.y + 1, coord.x + 1);
 #endif
-
 }
 
 typedef struct CoordStr CoordStr;
-

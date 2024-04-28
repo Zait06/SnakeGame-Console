@@ -1,7 +1,7 @@
 #include "Food.h"
 
 Food::Food() {
-	init();
+    init();
 }
 
 void Food::init() {

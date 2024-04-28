@@ -4,21 +4,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-
 #include "../utils/screen.h"
 
 class Food {
-    public:
-        Food();
+   public:
+    Food();
 
-		CoordStr coord();	// Food coordinate
-		void setCoord(CoordStr coord);
-        
-		void init();
-        bool impact(CoordStr coord);
+    CoordStr coord();  // Food coordinate
+    void setCoord(CoordStr coord);
 
-	private:
-		CoordStr m_coord;
+    void init();
+    bool impact(CoordStr coord);
+
+   private:
+    CoordStr m_coord;
 };
 
 #endif
