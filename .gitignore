@@ -8,5 +8,5 @@
 *.out
 *.png
 *.pdf
-build/
+build*/
 test/

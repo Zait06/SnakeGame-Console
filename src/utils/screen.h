@@ -24,6 +24,10 @@ namespace color {
 const int GREEN = FOREGROUND_GREEN | FOREGROUND_INTENSITY;
 const int YELLOW = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY;
 const int WHITE = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY;
+#else
+const int GREEN = 32;
+const int YELLOW = 33;
+const int WHITE = 37;
 #endif
 
     void change(int value);

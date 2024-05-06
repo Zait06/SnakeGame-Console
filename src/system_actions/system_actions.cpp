@@ -1,28 +1,56 @@
 #include "system_actions.h"
 
 #ifdef __linux__
-int kbhit() {
-    struct termios oldt, newt;
-    int ch;
-    int oldf;
+static struct termios old, current;
 
-    tcgetattr(STDIN_FILENO, &oldt);
-    newt = oldt;
-    newt.c_lflag &= ~(ICANON | ECHO);
-    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-    oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
-    fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+/* Initialize new terminal i/o settings */
+void initTermios(int echo) {
+    tcgetattr(0, &old);         /* grab old terminal i/o settings */
+    current = old;              /* make new settings same as old settings */
+    current.c_lflag &= ~ICANON; /* disable buffered i/o */
+    if (echo) {
+        current.c_lflag |= ECHO; /* set echo mode */
+    } else {
+        current.c_lflag &= ~ECHO; /* set no echo mode */
+    }
+    tcsetattr(0, TCSANOW, &current); /* use these new terminal i/o settings now */
+}
 
-    ch = getchar();
+/* Restore old terminal i/o settings */
+void resetTermios(void) {
+    tcsetattr(0, TCSANOW, &old);
+}
 
-    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-    fcntl(STDIN_FILENO, F_SETFL, oldf);
+int _kbhit() {
+    static const int STDIN = 0;
+    static bool initialized = false;
 
-    if (ch != EOF) {
-        ungetc(ch, stdin);
-        return 1;
+    if (!initialized) {
+        // Use termios to turn off line buffering
+        termios term;
+        tcgetattr(STDIN, &term);
+        term.c_lflag &= ~ICANON;
+        tcsetattr(STDIN, TCSANOW, &term);
+        setbuf(stdin, NULL);
+        initialized = true;
     }
 
-    return 0;
+    int bytesWaiting;
+    ioctl(STDIN, FIONREAD, &bytesWaiting);
+    return bytesWaiting;
+}
+
+/* Read 1 character - echo defines echo mode */
+char getch_(int echo) {
+    char ch;
+    initTermios(echo);
+    ch = getchar();
+    resetTermios();
+    return ch;
+}
+
+/* Read 1 character without echo */
+char getch() {
+    return getch_(0);
 }
 #endif

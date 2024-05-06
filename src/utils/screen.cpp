@@ -36,6 +36,8 @@ void color::change(int value) {
 #ifdef _WIN32
     HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hCon, value);
+#else
+    printf("\033[1;%dm", value);
 #endif
 }
 
