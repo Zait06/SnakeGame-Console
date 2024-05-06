@@ -7,12 +7,15 @@
 
 int main() {
     srand(time(NULL));
-    CLEARSCREEN;
+    CLEAN_SCREEN;
     Game game;
     game.run();
+	CLEAN_SCREEN;
+    Game::paintGameOver({20, 7});
+	Game::paintFrame();
+	printf("\n");
 #ifdef _WIN32
-    PlaySound(TEXT("../sounds/GameOver.wav"), NULL, SND_FILENAME | SND_ASYNC);
+    PlaySound(TEXT("../sounds/GameOver.wav"), NULL, SND_FILENAME);
 #endif
-    PAUSE;
     return 0;
 }

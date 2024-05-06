@@ -15,5 +15,19 @@ struct CoordStr {
 
 // Cursor position in coords
 void gotoxy(CoordStr coord);
+void setOnXY(CoordStr coord, char value);
+void hideCursor();
+
+namespace color {
+
+#ifdef _WIN32
+const int GREEN = FOREGROUND_GREEN | FOREGROUND_INTENSITY;
+const int YELLOW = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY;
+const int WHITE = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY;
+#endif
+
+    void change(int value);
+
+}
 
 #endif  // _SCREEN_H_

@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <thread>
 #include "../system_actions/system_actions.h"
 
 Game::Game() {
@@ -7,58 +8,103 @@ Game::Game() {
 
     m_snake = new Snake();
     m_food = new Food();
+    color::change(color::WHITE);
+}
+
+Game::~Game() {
+    free(m_snake);
+    free(m_food);
 }
 
 void Game::dropSnake() {
-    gotoxy(m_snake->at(m_snake->n));
-    printf(" ");
+    setOnXY(m_snake->at(m_snake->n), ' ');
 }
 
 void Game::paintSnake() {
+    color::change(color::GREEN);
     for (int i = 1; i < m_snake->size; i++) {
-        gotoxy(m_snake->at(i));
-        printf("%c", 111);
+        setOnXY(m_snake->at(i), (char)111);
     }
-    gotoxy(m_snake->at(0));
-    printf("%c", 2);
+    setOnXY(m_snake->at(0), (char)2);
+    color::change(color::WHITE);
+    hideCursor();
 }
 
 void Game::paintFood() {
-    gotoxy(m_food->coord());
-    printf("%c", 178);
+    color::change(color::YELLOW);
+    setOnXY(m_food->coord(), (char)178);
+    color::change(color::WHITE);
 }
 
 void Game::paintFrame() {
     // Horizontal lines
     for (int i = 2; i < 78; i++) {
-        gotoxy({i, 3});
-        printf("%c", 205);
-        gotoxy({i, 23});
-        printf("%c", 205);
+        setOnXY({i, 3}, (char)205);
+        setOnXY({i, 23}, (char)205);
     }
 
     // Vertical lines
     for (int i = 4; i < 23; i++) {
-        gotoxy({2, i});
-        printf("%c", 186);
-        gotoxy({77, i});
-        printf("%c", 186);
+        setOnXY({2, i}, (char)186);
+        setOnXY({77, i}, (char)186);
     }
 
     // Corners
-    gotoxy({2, 3});
-    printf("%c", 201);
-    gotoxy({2, 23});
-    printf("%c", 200);
-    gotoxy({77, 3});
-    printf("%c", 187);
-    gotoxy({77, 23});
-    printf("%c", 188);
+    setOnXY({2, 3}, (char)201);
+    setOnXY({2, 23}, (char)200);
+    setOnXY({77, 3}, (char)187);
+    setOnXY({77, 23}, (char)188);
+}
+
+void Game::paintPause(CoordStr init_coord) {
+    char_p(init_coord);
+    char_a({init_coord.x + 10, init_coord.y});
+    char_u({init_coord.x + 20, init_coord.y});
+    char_s({init_coord.x + 30, init_coord.y});
+    char_e({init_coord.x + 40, init_coord.y});
+}
+
+void Game::paintGameOver(CoordStr init_coord) {
+    char_g(init_coord);
+    char_a({init_coord.x + 10, init_coord.y});
+    char_m({init_coord.x + 20, init_coord.y});
+    char_e({init_coord.x + 30, init_coord.y});
+    
+    CoordStr next_coord = {init_coord.x, init_coord.y + 7};
+    char_o(next_coord);
+    char_v({next_coord.x + 10, next_coord.y});
+    char_e({next_coord.x + 20, next_coord.y});
+    char_r({next_coord.x + 30, next_coord.y});
+}
+
+bool Game::pause() {
+    CLEAN_SCREEN;
+    Game::paintFrame();
+    paintScore();
+    Game::paintPause({15, 10});
+    color::change(color::YELLOW);
+    gotoxy({12, 17});
+    printf("Press [E] to exit or press any other key to continue...");
+    color::change(color::WHITE);
+
+    int key = GET_KEY;
+    if (((char)key) == 'e' || ((char)key) == 'E') {
+        return false;
+    }
+
+    m_key = m_prevKey;
+    CLEAN_SCREEN;
+    Game::paintFrame();
+    paintScore();
+    paintFood();
+
+    return true;
 }
 
 void Game::paintScore() {
     gotoxy({3, 1});
     printf("Score: %d", score);
+    hideCursor();
 }
 
 bool Game::gameOver() {
@@ -73,8 +119,9 @@ bool Game::gameOver() {
 }
 
 void Game::tapKey() {
-    if (CHECKKEY) {
-        m_key = GETACTION;
+    if (CHECK_KEY) {
+        m_prevKey = m_key;
+        m_key = GET_KEY;
         Keys key = static_cast<Keys>(m_key);
         switch (key) {
             case Keys::UP:
@@ -100,9 +147,8 @@ void Game::tapKey() {
 }
 
 void Game::changeVelocity() {
-    if (score % 20 == 0 && velocity > 10) {
+    if (score % 20 == 0 && velocity > 10)
         velocity -= 10;
-    }
 }
 
 void playSound() {
@@ -112,10 +158,13 @@ void playSound() {
 }
 
 void Game::run() {
-    paintFrame();
+    Game::paintFrame();
     paintFood();
 
-    while (m_key != static_cast<uint16_t>(Keys::ESC) && !gameOver()) {
+    while (!gameOver()) {
+        if (m_key == static_cast<uint16_t>(Keys::ESC)) {
+            if (!pause()) break;
+        }
         paintScore();
         dropSnake();
         m_snake->savePosition();

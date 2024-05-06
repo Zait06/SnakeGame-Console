@@ -15,6 +15,8 @@ add_executable(
     src/utils/screen.cpp
     src/utils/keyboard.h
     src/utils/keyboard.cpp
+    src/utils/BigChars.h
+    src/utils/BigChars.cpp
     src/Food/Food.h
     src/Food/Food.cpp
     src/Snake/Snake.h
