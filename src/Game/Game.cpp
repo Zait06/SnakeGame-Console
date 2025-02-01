@@ -1,6 +1,6 @@
-#include "Game.h"
+#include "game.h"
 #include <thread>
-#include "../system_actions/system_actions.h"
+#include "system_actions.h"
 
 Game::Game() {
     velocity = 200;
@@ -28,6 +28,15 @@ void Game::paintSnake() {
     setOnXY(m_snake->at(0), (char)2);
     color::change(color::WHITE);
     hideCursor();
+}
+
+bool Game::foodInSnake()
+{
+    for (int idx = 0; idx < m_snake->size; idx++) {
+        if (m_food->coord() == m_snake->at(idx))
+            return true;
+    }
+    return false;
 }
 
 void Game::paintFood() {
@@ -153,7 +162,7 @@ void Game::changeVelocity() {
 
 void playSound() {
 #ifdef _WIN32
-    PlaySound(TEXT("../sounds/CoinPlay.wav"), NULL, SND_FILENAME | SND_ASYNC);
+    PlaySound(TEXT("../assets/sounds/CoinPlay.wav"), NULL, SND_FILENAME | SND_ASYNC);
 #endif
 }
 
@@ -174,6 +183,9 @@ void Game::run() {
         if (m_food->impact(m_snake->coord())) {
             playSound();
             m_food->init();
+            while (foodInSnake()) {
+                m_food->init();
+            }
             m_snake->size++;
             score += 10;
             changeVelocity();

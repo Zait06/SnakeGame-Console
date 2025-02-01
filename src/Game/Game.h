@@ -6,9 +6,9 @@
 #include <chrono>
 #include <iostream>
 #include <thread>
-#include "../Food/Food.h"
-#include "../Snake/Snake.h"
-#include "../utils/BigChars.h"
+#include "food.h"
+#include "snake.h"
+#include "bigchars.h"
 
 class Game {
    public:
@@ -38,6 +38,7 @@ class Game {
     void paintFood();
     void dropSnake();
     void paintSnake();
+    bool foodInSnake();
 };
 
 #endif

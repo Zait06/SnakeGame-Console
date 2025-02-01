@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <iostream>
-#include "Game/Game.h"
-#include "system_actions/system_actions.h"
+#include "game.h"
+#include "system_actions.h"
 
 int main() {
     srand(time(NULL));
@@ -15,7 +15,7 @@ int main() {
 	Game::paintFrame();
 	printf("\n");
 #ifdef _WIN32
-    PlaySound(TEXT("../sounds/GameOver.wav"), NULL, SND_FILENAME);
+    PlaySound(TEXT("../assets/sounds/GameOver.wav"), NULL, SND_FILENAME);
 #endif
     return 0;
 }
