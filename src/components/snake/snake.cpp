@@ -8,7 +8,7 @@ void Snake::init() {
     n = 1;
     size = 4;
     m_coord = new CoordStr{10, 12};
-    m_dir = Direction::RIGTH;
+    m_dir = Direction::RIGHT;
 }
 
 void Snake::savePosition() {
@@ -26,7 +26,7 @@ void Snake::moveTo() {
         case Direction::DOWN:
             m_coord->y++;
             break;
-        case Direction::RIGTH:
+        case Direction::RIGHT:
             m_coord->x++;
             break;
         case Direction::LEFT:

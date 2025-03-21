@@ -1,56 +1,54 @@
-#include "system_actions.h"
-
 #ifdef __linux__
-static struct termios old, current;
+#include <termios.h>
+#include <unistd.h>
+#include <cstdio>
+#include <sys/ioctl.h>
 
-/* Initialize new terminal i/o settings */
-void initTermios(int echo) {
-    tcgetattr(0, &old);         /* grab old terminal i/o settings */
-    current = old;              /* make new settings same as old settings */
-    current.c_lflag &= ~ICANON; /* disable buffered i/o */
-    if (echo) {
-        current.c_lflag |= ECHO; /* set echo mode */
-    } else {
-        current.c_lflag &= ~ECHO; /* set no echo mode */
-    }
-    tcsetattr(0, TCSANOW, &current); /* use these new terminal i/o settings now */
+
+void disableEcho() {
+    struct termios oldt, newt;
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 }
 
-/* Restore old terminal i/o settings */
-void resetTermios(void) {
-    tcsetattr(0, TCSANOW, &old);
+char getch() {
+    disableEcho();
+    char buf = 0;
+    struct termios old = {0}, newt = {0};
+    fflush(stdout);
+    if (tcgetattr(0, &old) < 0)
+        perror("tcgetattr()");
+    newt = old;
+    newt.c_lflag &= ~(ICANON | ECHO); // disable canonical mode and echo so the pressed char isn't shown
+    newt.c_cc[VMIN] = 1;
+    newt.c_cc[VTIME] = 0;
+    if (tcsetattr(0, TCSANOW, &newt) < 0)
+        perror("tcsetattr()");
+    if (read(0, &buf, 1) < 0)
+        perror("read()");
+    if (tcsetattr(0, TCSADRAIN, &old) < 0)
+        perror("tcsetattr()");
+    return buf;
 }
 
 int _kbhit() {
-    static const int STDIN = 0;
-    static bool initialized = false;
-
-    if (!initialized) {
-        // Use termios to turn off line buffering
-        termios term;
-        tcgetattr(STDIN, &term);
-        term.c_lflag &= ~ICANON;
-        tcsetattr(STDIN, TCSANOW, &term);
-        setbuf(stdin, NULL);
-        initialized = true;
-    }
-
+    termios oldt, newt;
     int bytesWaiting;
-    ioctl(STDIN, FIONREAD, &bytesWaiting);
+    // Save current terminal settings
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    // Disable canonical mode and echo
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    
+    ioctl(STDIN_FILENO, FIONREAD, &bytesWaiting);
+    
+    // Restore original terminal settings
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
     return bytesWaiting;
 }
 
-/* Read 1 character - echo defines echo mode */
-char getch_(int echo) {
-    char ch;
-    initTermios(echo);
-    ch = getchar();
-    resetTermios();
-    return ch;
-}
 
-/* Read 1 character without echo */
-char getch() {
-    return getch_(0);
-}
 #endif

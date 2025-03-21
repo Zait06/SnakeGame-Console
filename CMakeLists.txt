@@ -10,6 +10,8 @@ add_subdirectory(src)
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
+
+
 # # Install the executable
 # install(TARGETS SnakeGame DESTINATION bin)
 
