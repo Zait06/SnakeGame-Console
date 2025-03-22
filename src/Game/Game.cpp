@@ -5,15 +5,14 @@
 Game::Game() {
     velocity = 200;
     score = 0;
-
     m_snake = new Snake();
     m_food = new Food();
     color::change(color::WHITE);
 }
 
 Game::~Game() {
-    free(m_snake);
-    free(m_food);
+    delete m_snake;
+    delete m_food;
 }
 
 void Game::dropSnake() {
@@ -129,7 +128,10 @@ bool Game::gameOver() {
 
 void Game::tapKey() {
     if (CHECK_KEY) {
-        m_prevKey = m_key;
+        //Compare keys
+        if (m_key != m_prevKey){
+            m_prevKey = m_key;
+        }
         m_key = GET_KEY;
         Keys key = static_cast<Keys>(m_key);
         switch (key) {
@@ -141,12 +143,12 @@ void Game::tapKey() {
                 if (m_snake->dir() != Direction::UP)
                     m_snake->setDir(Direction::DOWN);
                 break;
-            case Keys::RIGTH:
+            case Keys::RIGHT:
                 if (m_snake->dir() != Direction::LEFT)
-                    m_snake->setDir(Direction::RIGTH);
+                    m_snake->setDir(Direction::RIGHT);
                 break;
             case Keys::LEFT:
-                if (m_snake->dir() != Direction::RIGTH)
+                if (m_snake->dir() != Direction::RIGHT)
                     m_snake->setDir(Direction::LEFT);
                 break;
             default:
@@ -164,13 +166,26 @@ void playSound() {
 #ifdef _WIN32
     PlaySound(TEXT("../assets/sounds/CoinPlay.wav"), NULL, SND_FILENAME | SND_ASYNC);
 #endif
+#ifdef __linux__
+    system("paplay ../assets/sounds/CoinPlay.wav &");
+#endif
 }
 
 void Game::run() {
+    //If game is running in linux, check for aplay if not exit
+    #ifdef __linux__
+    DISABLE_ECHO;
+    if (system("which paplay > /dev/null") != 0) {
+        std::cout << "Error: paplay not found. Please install it to play sounds." << std::endl;
+        exit(1);
+    }
+    #endif
+    CLEAN_SCREEN;
     Game::paintFrame();
     paintFood();
 
     while (!gameOver()) {
+        tapKey();
         if (m_key == static_cast<uint16_t>(Keys::ESC)) {
             if (!pause()) break;
         }
@@ -179,7 +194,6 @@ void Game::run() {
         m_snake->savePosition();
         paintSnake();
 
-        tapKey();
         if (m_food->impact(m_snake->coord())) {
             playSound();
             m_food->init();
@@ -191,8 +205,6 @@ void Game::run() {
             changeVelocity();
             paintFood();
         }
-        tapKey();
-
         m_snake->moveTo();
         std::this_thread::sleep_for(std::chrono::milliseconds(velocity));
     }

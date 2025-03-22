@@ -15,19 +15,19 @@
 #else
 // Code for linux
 #include <stdio.h>
-#include <stropts.h>
 #include <sys/ioctl.h>
 #include <sys/select.h>
 #include <termios.h>
 
 int _kbhit();
 char getch();
+void disableEcho();
 
 #define CLEAN_SCREEN system("clear")
 #define CHECK_KEY _kbhit()
 #define PAUSE system("read -rsp $'\nPress any key to continue...\n' -n 1")
 #define GET_KEY getch()
-
+#define DISABLE_ECHO disableEcho()
 #endif
 
 #endif
