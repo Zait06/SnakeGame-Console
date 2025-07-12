@@ -2,14 +2,10 @@
 
 ## Build & Run
 
-### Windows
-
-Open Developer PowerShell for VS 2022
-
 ```sh
 mkdir build
 cd build
-cmake ..
-msbuild.exe .\SnakeGameConsole.sln
-.\Debug\SnakeGame.exe
+cmake -S . -B ./build -GNinja -DCMAKE_BUILD_TYPE=Release
+cmake --build ./build
+./src/SnakeGame.exe
 ```

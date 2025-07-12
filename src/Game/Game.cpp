@@ -205,6 +205,7 @@ void Game::run() {
             changeVelocity();
             paintFood();
         }
+        tapKey();
         m_snake->moveTo();
         std::this_thread::sleep_for(std::chrono::milliseconds(velocity));
     }
